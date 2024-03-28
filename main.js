@@ -21,25 +21,25 @@ document.getElementById('close').addEventListener('click', () => {
   modal.close();
 });
 
-document.getElementById('children').addEventListener('click', () => {
-  const newChildTemplate = {
-    "name": "新しい子",
-    "detail": {
-      "company": "新しい会社",
-      "license": "新しいライセンス",
-      "dateOfBirth": "生年月日",
-      "animal": "新しい占い",
-      "price": 1000
-    }
-  };
-  tree.addChild(tree.selectedId, newChildTemplate);
-});
+// document.getElementById('children').addEventListener('click', () => {
+//   const newChildTemplate = {
+//     "name": "新しい子",
+//     "detail": {
+//       "company": "新しい会社",
+//       "license": "新しいライセンス",
+//       "dateOfBirth": "生年月日",
+//       "animal": "新しい占い",
+//       "price": 1000
+//     }
+//   };
+//   tree.addChild(tree.selectedId, newChildTemplate);
+// });
 
-document.getElementById('remove').addEventListener('click', () => {
-  tree.removeChildById();
-  tree.updateTree();
-  modal.close();
-});
+// document.getElementById('remove').addEventListener('click', () => {
+//   tree.removeChildById();
+//   tree.updateTree();
+//   modal.close();
+// });
 
 document.getElementById('move').addEventListener('click', () => {
   console.log('移動');

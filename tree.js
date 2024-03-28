@@ -1,5 +1,16 @@
 import * as d3 from "d3";
 
+const newChildTemplate = {
+  "name": "新しい子",
+  "detail": {
+    "company": "新しい会社",
+    "license": "新しいライセンス",
+    "dateOfBirth": "生年月日",
+    "animal": "新しい占い",
+    "price": 1000
+  }
+};
+
 class Tree {
   constructor(data, app_id = "app") {
     this.data = data;
@@ -83,10 +94,7 @@ class Tree {
       .attr(
         "transform",
         (d) => `translate(${d.y}, ${d.x} )`
-      )
-      .on("click", (e, d) => {
-        this.onNodeClick(d);
-      });
+      );
 
     // テキストの追加
     nodeEnter
@@ -97,15 +105,6 @@ class Tree {
       .clone(true)
       .lower()
       .attr("stroke", "white");
-
-    // アイコン画像の追加
-    nodeEnter
-      .append("image")
-      .attr("xlink:href", "/public/icon.svg")
-      .attr("width", 74)
-      .attr("height", 74)
-      .attr("x", -74 / 2) // 画像の幅の半分を左にずらす
-      .attr("y", -74 / 2); // 画像の高さの半分を上にずらす;
 
     // 背景の枠線をSVG画像で出力
     nodeEnter.append("image")
@@ -126,7 +125,8 @@ class Tree {
     const div = foreignObject.append("xhtml:div")
       .style("width", "100%")
       .style("height", "100%")
-      .style("position", "relative");
+      .style("position", "relative")
+      .style("pointer-events", "all");;
 
     // ボタンの追加
     const button1 = div.append("xhtml:button")
@@ -135,7 +135,13 @@ class Tree {
       .style("align-items", "center")
       .style("justify-content", "center")
       .style("border", "none")
-      .style("background-color", "transparent");
+      .style("background-color", "transparent")
+      .style("pointer-events", "auto")
+      .on("click", (e, d) => {
+        // ボタンクリック時のイベントハンドラ
+        e.stopPropagation(); // イベントの伝播を止める
+        this.addChild(d.data.id, newChildTemplate)
+      });
     
       // ボタン内にSVG画像を埋め込む
     button1.append("xhtml:img")
@@ -154,7 +160,13 @@ class Tree {
       .style("align-items", "center")
       .style("justify-content", "center")
       .style("border", "none")
-      .style("background-color", "transparent");
+      .style("background-color", "transparent")
+      .style("pointer-events", "auto")
+      .on("click", (e, d) => {
+        // ボタンクリック時のイベントハンドラ
+        e.stopPropagation(); // イベントの伝播を止める
+        console.log('ボタン2クリック'); // ボタン1クリック時に実行する関数
+      });
     
       // ボタン内にSVG画像を埋め込む
     button2.append("xhtml:img")
@@ -171,7 +183,16 @@ class Tree {
         .style("align-items", "center")
         .style("justify-content", "center")
         .style("border", "none")
-        .style("background-color", "transparent");
+        .style("background-color", "transparent")
+        .style("pointer-events", "auto")
+        .on("click", (e, d) => {
+          // ボタンクリック時のイベントハンドラ
+          e.stopPropagation(); // イベントの伝播を止める
+          // ここで`this`はTreeNodeインスタンスを指す
+          self.removeChildById();
+          // ツリーのビューを更新
+          self.updateTree();
+        });
       
     // ボタン内にSVG画像を埋め込む
     button3.append("xhtml:img")
@@ -188,7 +209,13 @@ class Tree {
         .style("align-items", "center")
         .style("justify-content", "center")
         .style("border", "none")
-        .style("background-color", "transparent");
+        .style("background-color", "transparent")
+        .style("pointer-events", "auto")
+        .on("click", (e, d) => {
+          // ボタンクリック時のイベントハンドラ
+          e.stopPropagation(); // イベントの伝播を止める
+          console.log('ボタン4クリック'); // ボタン1クリック時に実行する関数
+        });
       
     // ボタン内にSVG画像を埋め込む
     button4.append("xhtml:img")
@@ -205,7 +232,13 @@ class Tree {
         .style("align-items", "center")
         .style("justify-content", "center")
         .style("border", "none")
-        .style("background-color", "transparent");
+        .style("background-color", "transparent")
+        .style("pointer-events", "auto")
+        .on("click", (e, d) => {
+          // ボタンクリック時のイベントハンドラ
+          e.stopPropagation(); // イベントの伝播を止める
+          console.log('ボタン5クリック'); // ボタン1クリック時に実行する関数
+        });
 
     // ボタン内にSVG画像を埋め込む
     button5.append("xhtml:img")
@@ -215,6 +248,21 @@ class Tree {
         .style("position", "absolute")
         .style("top", "35px")
         .style("left", "0px");
+
+    // アイコン画像の追加
+    const icon = nodeEnter.append("image")
+      .attr("xlink:href", "/public/icon.svg")
+      .attr("width", 74)
+      .attr("height", 74)
+      .attr("x", -74 / 2) // 画像の幅の半分を左にずらす
+      .attr("y", -74 / 2)
+      .style("pointer-events", "auto")
+      .on("click", (e, d) => {
+        // アイコンクリック時のイベントハンドラ
+        e.stopPropagation(); // イベントの伝播を止める
+        this.onNodeClick(d); // アイコンクリック時に実行する関数
+      }); // 画像の高さの半分を上にずらす;
+
   
     // 既存のノードを更新
     nodes
