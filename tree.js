@@ -19,8 +19,8 @@ class Tree {
   }
   _tree() {
     const root = d3.hierarchy(this.data);
-    root.dy = 120; // 要素同士の横の距離感。数値を大きくすると横の余白が広がる
-    root.dx = 120; // 要素同士の縦の距離感。数値を大きくすると縦の余白が広がる
+    root.dy = 170; // 要素同士の横の距離感。数値を大きくすると横の余白が広がる
+    root.dx = 170; // 要素同士の縦の距離感。数値を大きくすると縦の余白が広がる
     return d3.tree().nodeSize([root.dy, root.dx])(root);
   }
 
@@ -37,7 +37,7 @@ class Tree {
     // SVGコンテナの作成
     const svg = d3
       .select(document.createElementNS(d3.namespaces.svg, "svg"))
-      .attr("viewBox", [0, -40, this.width, this.height])
+      .attr("viewBox", [-150, -140, this.width, this.height])
       .attr("width", this.width)
       .attr("height", this.height);
 
@@ -82,7 +82,7 @@ class Tree {
       // .attr("transform", d => `translate(${d.x}, ${d.y})`)
       .attr(
         "transform",
-        (d) => `translate(${d.y}, ${d.x})`
+        (d) => `translate(${d.y}, ${d.x} )`
       )
       .on("click", (e, d) => {
         this.onNodeClick(d);
@@ -98,23 +98,124 @@ class Tree {
       .lower()
       .attr("stroke", "white");
 
-    // 画像の追加
+    // アイコン画像の追加
     nodeEnter
       .append("image")
       .attr("xlink:href", "/public/icon.svg")
-      .attr("width", 40)
-      .attr("height", 40)
-      .attr("x", -40 / 2) // 画像の幅の半分を左にずらす
-      .attr("y", -40 / 2); // 画像の高さの半分を上にずらす;
+      .attr("width", 74)
+      .attr("height", 74)
+      .attr("x", -74 / 2) // 画像の幅の半分を左にずらす
+      .attr("y", -74 / 2); // 画像の高さの半分を上にずらす;
 
-    // 円の追加
-    nodeEnter
-      .append("circle")
-      .attr("r", 30) // 半径
-      .attr("fill", "none") // 内部は透明
-      .attr("stroke", "black") // 枠線の色
-      .attr("stroke-width", 2); // 枠線の太さ
+    // 背景の枠線をSVG画像で出力
+    nodeEnter.append("image")
+      .attr("xlink:href", "public/circle.svg")
+      .attr("x", -118 / 2) // SVGの中心をノードの中心に合わせる
+      .attr("y", -118 / 2) // SVGの中心をノードの中心に合わせる
+      .attr("width", 118) // SVG画像のサイズを指定
+      .attr("height", 118); // SVG画像のサイズを指定
 
+    // 設定選択用のforeignObjectを追加
+    const foreignObject = nodeEnter.append("foreignObject")
+      .attr("width", 150) // foreignObjectの幅を十分に大きく
+      .attr("height", 150) // foreignObjectの高さを十分に大きく
+      .attr("x", -75) // 中心からのXオフセット
+      .attr("y", -75); // 中心からのYオフセット
+
+    // divコンテナの追加
+    const div = foreignObject.append("xhtml:div")
+      .style("width", "100%")
+      .style("height", "100%")
+      .style("position", "relative");
+
+    // ボタンの追加
+    const button1 = div.append("xhtml:button")
+      .attr("type", "button")
+      .style("display", "inline-flex")
+      .style("align-items", "center")
+      .style("justify-content", "center")
+      .style("border", "none")
+      .style("background-color", "transparent");
+    
+      // ボタン内にSVG画像を埋め込む
+    button1.append("xhtml:img")
+      .attr("src", "public/settings.svg")
+      .style("width", "41px") // 画像のサイズを設定
+      .style("height", "41px")
+      .style("position", "absolute")
+      .style("top", "0px")
+      .style("right", "0")
+      .style("left", "0")
+      .style("margin", "auto");
+
+    const button2 = div.append("xhtml:button")
+      .attr("type", "button")
+      .style("display", "inline-flex")
+      .style("align-items", "center")
+      .style("justify-content", "center")
+      .style("border", "none")
+      .style("background-color", "transparent");
+    
+      // ボタン内にSVG画像を埋め込む
+    button2.append("xhtml:img")
+      .attr("src", "public/settings.svg")
+      .style("width", "41px") // 画像のサイズを設定
+      .style("height", "41px")
+      .style("position", "absolute")
+      .style("top", "35px")
+      .style("right", "0px");
+    
+    const button3 = div.append("xhtml:button")
+        .attr("type", "button")
+        .style("display", "inline-flex")
+        .style("align-items", "center")
+        .style("justify-content", "center")
+        .style("border", "none")
+        .style("background-color", "transparent");
+      
+    // ボタン内にSVG画像を埋め込む
+    button3.append("xhtml:img")
+        .attr("src", "public/settings.svg")
+        .style("width", "41px") // 画像のサイズを設定
+        .style("height", "41px")
+        .style("position", "absolute")
+        .style("bottom", "10px")
+        .style("right", "15px");
+    
+    const button4 = div.append("xhtml:button")
+        .attr("type", "button")
+        .style("display", "inline-flex")
+        .style("align-items", "center")
+        .style("justify-content", "center")
+        .style("border", "none")
+        .style("background-color", "transparent");
+      
+    // ボタン内にSVG画像を埋め込む
+    button4.append("xhtml:img")
+        .attr("src", "public/settings.svg")
+        .style("width", "41px") // 画像のサイズを設定
+        .style("height", "41px")
+        .style("position", "absolute")
+        .style("bottom", "10px")
+        .style("left", "15px");
+    
+    const button5 = div.append("xhtml:button")
+        .attr("type", "button")
+        .style("display", "inline-flex")
+        .style("align-items", "center")
+        .style("justify-content", "center")
+        .style("border", "none")
+        .style("background-color", "transparent");
+
+    // ボタン内にSVG画像を埋め込む
+    button5.append("xhtml:img")
+        .attr("src", "public/settings.svg")
+        .style("width", "41px") // 画像のサイズを設定
+        .style("height", "41px")
+        .style("position", "absolute")
+        .style("top", "35px")
+        .style("left", "0px");
+  
     // 既存のノードを更新
     nodes
       .merge(nodeEnter)

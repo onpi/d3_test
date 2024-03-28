@@ -2,6 +2,12 @@ body {
   font-family: sans-serif;
 }
 
+#app {
+  background-image: url(public/bg.png);
+  background-size: cover;
+  background-position: center;
+}
+
 g {
   background-color: #000;
 }
