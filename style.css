@@ -1,0 +1,48 @@
+body {
+  font-family: sans-serif;
+}
+
+g {
+  background-color: #000;
+}
+
+#modal {
+  display: none;
+}
+#modal.open {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, .4);
+  display: block;
+  left: 50%;
+  position: fixed;
+  padding: 5px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+#zoomApp {
+  display: none;
+}
+#zoomApp.show {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, .4);
+  display: block;
+  left: 50%;
+  position: fixed;
+  padding: 5px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  z-index: 1;
+}
+
+#closeZoom {
+  float: right;
+}
+
+svg image {
+  border: 1px solid #000;
+}
