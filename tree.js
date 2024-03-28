@@ -19,9 +19,9 @@ class Tree {
   }
   _tree() {
     const root = d3.hierarchy(this.data);
-    root.dx = 50; // 要素同士の横の距離感。数値を大きくすると横の余白が広がる
-    root.dy = 120; // 要素同士の縦の距離感。数値を大きくすると縦の余白が広がる
-    return d3.tree().nodeSize([root.dx, root.dy])(root);
+    root.dy = 120; // 要素同士の横の距離感。数値を大きくすると横の余白が広がる
+    root.dx = 120; // 要素同士の縦の距離感。数値を大きくすると縦の余白が広がる
+    return d3.tree().nodeSize([root.dy, root.dx])(root);
   }
 
   init() {
@@ -82,7 +82,7 @@ class Tree {
       // .attr("transform", d => `translate(${d.x}, ${d.y})`)
       .attr(
         "transform",
-        (d) => `translate(${d.x + (this.width + d.x) / 2}, ${d.y})`
+        (d) => `translate(${d.y}, ${d.x})`
       )
       .on("click", (e, d) => {
         this.onNodeClick(d);
@@ -118,11 +118,7 @@ class Tree {
     // 既存のノードを更新
     nodes
       .merge(nodeEnter)
-      // .attr("transform", d => `translate(${d.x}, ${d.y})`);
-      .attr(
-        "transform",
-        (d) => `translate(${d.x + (this.width + d.x) / 2}, ${d.y})`
-      );
+      .attr("transform", d => `translate(${d.y}, ${d.x})`);
 
     // 不要になったノードの削除
     nodes.exit().remove();
@@ -160,34 +156,24 @@ class Tree {
   straightLinePath(d) {
     // リンクの開始点と終了点を直線で結びます
     // ノード同士を繋ぐ線の座標を決定する
-    return `M${d.source.x + (this.width + d.source.x) / 2},${
-      d.source.y + 30
-    } L${d.target.x + (this.width + d.target.x) / 2},${d.target.y - 30}`;
+    return `M${d.source.y},${d.source.x} L${d.target.y},${d.target.x}`;
+    return `M${d.source.y + 30},${d.source.x + (this.width + d.source.x) / 2} L${d.target.y - 30},${d.target.x + (this.width + d.target.x) / 2}`;
   }
   // 曲線
   curvedLinePath(d) {
     const linkGenerator = d3
-      .linkVertical()
-      .x((node) => node.x + (this.width + node.x) / 2)
-      .y((node) => node.y);
+      .linkHorizontal() // 水平方向のリンク生成器を使用
+      .x((node) => node.y)
+      .y((node) => node.x);
     return linkGenerator(d);
   }
   // 直角に曲がる線
   rightAngleLinePath(d) {
-    // リンクの開始点
-    const o = {
-      x: d.source.x + (this.width + d.source.x) / 2,
-      y: d.source.y + 30,
-    };
-    // リンクの終了点
-    const t = {
-      x: d.target.x + (this.width + d.target.x) / 2,
-      y: d.target.y - 30,
-    };
-    // 中間点
-    const m = (o.y + t.y) / 2;
-    // パスを作成（直角に曲がる）
-    return `M${o.x},${o.y} V${m} H${t.x} V${t.y}`;
+    const sourceX = d.source.y, sourceY = d.source.x;
+    const targetX = d.target.y, targetY = d.target.x;
+    // 直角のパスを生成
+    const midX = (sourceX + targetX) / 2; // 中間X座標
+    return `M${sourceX},${sourceY} L${midX},${sourceY} L${midX},${targetY} L${targetX},${targetY}`;
   }
 
   getLinkPath(d) {
